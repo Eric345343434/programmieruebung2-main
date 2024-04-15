@@ -1,8 +1,11 @@
 import streamlit as st
-from read_data import get_person_data, get_person_names
+from read_data import get_person_data, get_person_names, find_person_data_by_name
+from PIL import Image
+
 
 person_data = get_person_data()
 person_names_list = get_person_names(person_data)
+print(person_names_list)
 
 # Eine Überschrift der ersten Ebene
 st.write("# EKG APP")
@@ -18,3 +21,9 @@ st.session_state.current_user = st.selectbox(
     options = person_names_list, key="sbVersuchsperson")
 
 st.write(st.session_state.current_user,"wird zurzeit gewählt")
+current_user_list = find_person_data_by_name(st.session_state.current_user) 
+
+# Laden eines Bilds
+image = Image.open(current_user_list["picture_path"])
+# Anzeigen eines Bilds mit Caption
+st.image(image, caption=st.session_state.current_user)
